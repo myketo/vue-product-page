@@ -24,13 +24,12 @@
 <script>
 export default {
   name: "Header",
-
-}
+};
 </script>
 
 <style lang="scss">
 .header {
-  padding: 2.25em 0;
+  padding: 2.1em 0;
   border-bottom: 1px solid $grayish-blue;
   display: flex;
 
@@ -42,8 +41,8 @@ export default {
     .navigation {
       .links {
         display: flex;
-        gap: 2.1em;
-        margin-left: 4em;
+        gap: 2em;
+        margin-left: 3.75em;
         color: $dark-grayish-blue;
       }
     }
@@ -52,13 +51,13 @@ export default {
   .user {
     display: flex;
     align-items: center;
-    gap: 2.5em;
+    gap: 2.75em;
 
     .profile {
       display: flex;
 
       img {
-        width: 2.5em;
+        width: 3em;
       }
     }
   }
