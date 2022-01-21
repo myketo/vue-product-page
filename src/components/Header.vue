@@ -44,6 +44,26 @@ export default {
         gap: 2em;
         margin-left: 3.75em;
         color: $dark-grayish-blue;
+
+        li {
+          cursor: pointer;
+          position: relative;
+          padding: 0.1em;
+
+          &:hover {
+            color: $very-dark-blue;
+
+            &:before {
+              content: "";
+              border-bottom: 4px solid $orange;
+              display: block;
+              position: absolute;
+              width: 100%;
+              top: 3.85em;
+              left: 0;
+            }
+          }
+        }
       }
     }
   }
@@ -53,11 +73,27 @@ export default {
     align-items: center;
     gap: 2.75em;
 
+    .cart {
+      cursor: pointer;
+
+      &:hover {
+        filter: brightness(0);
+      }
+    }
+
     .profile {
       display: flex;
+      cursor: pointer;
+
+      &:hover {
+        img {
+          box-shadow: 0px 0px 0px 2px $orange;
+        }
+      }
 
       img {
         width: 3em;
+        border-radius: 100vw;
       }
     }
   }

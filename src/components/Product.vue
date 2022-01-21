@@ -1,18 +1,20 @@
 <template>
   <div class="product">
     <Gallery></Gallery>
-    <div></div>
+    <Details></Details>
   </div>
 </template>
 
 <script>
 import Gallery from "./Gallery.vue";
+import Details from "./Details.vue";
 
 export default {
   name: "Product",
 
   components: {
     Gallery,
+    Details,
   },
 };
 </script>

@@ -28,9 +28,8 @@ export default {
   font-weight: 400;
 }
 
-b,
-.bold {
-  font-weight: 700;
+b {
+  font-weight: $bold;
 }
 
 html {
