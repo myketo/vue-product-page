@@ -1,7 +1,30 @@
 <template>
-  <div class="gallery">
-    <div class="big-photo">
-      <img :src="getImage(activeImageId)" />
+  <div class="gallery" :class="{ lightbox: isLightbox }">
+    <img
+      v-if="isLightbox"
+      src="../assets/images/icon-close.svg"
+      class="close-lightbox"
+      @click="$emit('toggleLightbox')"
+    />
+    <div
+      class="big-photo-container"
+      @click="!isLightbox ? $emit('toggleLightbox') : ''"
+    >
+      <div
+        v-if="isLightbox"
+        class="arrow previous-photo"
+        @click="changeImage('previous')"
+      >
+        <img src="../assets/images/icon-previous.svg" />
+      </div>
+      <img :src="getImage(activeImageId)" class="big-photo" />
+      <div
+        v-if="isLightbox"
+        class="arrow next-photo"
+        @click="changeImage('next')"
+      >
+        <img src="../assets/images/icon-next.svg" />
+      </div>
     </div>
 
     <div class="thumbnails">
@@ -10,7 +33,7 @@
         :key="image.id"
         class="thumbnail"
         :class="{ active: image.id === activeImageId }"
-        @click="activeImageId = image.id"
+        @click="$emit('update:activeImageId', image.id)"
       >
         <img :src="getImage(image.id, true)" />
       </div>
@@ -22,31 +45,57 @@
 export default {
   name: "Gallery",
 
-  data() {
-    return {
-      images: [
-        { id: 1, name: "image-product-1" },
-        { id: 2, name: "image-product-2" },
-        { id: 3, name: "image-product-3" },
-        { id: 4, name: "image-product-4" },
-      ],
-
-      activeImageId: 1,
-    };
+  props: {
+    images: {
+      type: Array,
+      required: true,
+    },
+    isLightbox: {
+      type: Boolean,
+      default: false,
+    },
+    activeImageId: Number,
   },
+
+  emits: ["toggleLightbox", "update:activeImageId"],
 
   methods: {
     getImage(id, thumbnail = false) {
-      var image = "assets/images/";
-      image += this.images.find((image) => {
+      var filePath = "assets/images/";
+      filePath += this.images.find((image) => {
         return image.id === id;
       }).name;
 
       if (thumbnail) {
-        image += "-thumbnail";
+        filePath += "-thumbnail";
       }
 
-      return require("../" + image + ".jpg");
+      return require("../" + filePath + ".jpg");
+    },
+
+    changeImage(direction) {
+      var index = this.images.findIndex(
+        (image) => image.id === this.activeImageId
+      );
+      var lastIndex = this.images.length - 1;
+
+      if (direction === "previous") {
+        if (index > 0) {
+          var previousId = this.images[index - 1].id;
+          this.$emit("update:activeImageId", previousId);
+        } else {
+          this.$emit("update:activeImageId", this.images[lastIndex].id);
+        }
+      }
+
+      if (direction === "next") {
+        if (index < lastIndex) {
+          var nextId = this.images[index + 1].id;
+          this.$emit("update:activeImageId", nextId);
+        } else {
+          this.$emit("update:activeImageId", this.images[0].id);
+        }
+      }
     },
   },
 };
@@ -54,10 +103,10 @@ export default {
 
 <style lang="scss">
 .gallery {
-  .big-photo {
+  .big-photo-container {
     cursor: pointer;
 
-    img {
+    .big-photo {
       width: 100%;
       border-radius: 0.85em;
     }
@@ -72,6 +121,7 @@ export default {
       width: 20%;
       border-radius: 0.5em;
       cursor: pointer;
+      background-color: white;
 
       &.active {
         box-shadow: inset 0px 0px 0px 2px $orange;
@@ -92,6 +142,69 @@ export default {
         height: 100%;
         border-radius: 0.5em;
       }
+    }
+  }
+
+  &.lightbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+
+    .close-lightbox {
+      width: 1.25em;
+      align-self: flex-end;
+      margin-bottom: 1.25em;
+      cursor: pointer;
+      filter: brightness(10);
+
+      &:hover {
+        filter: none;
+      }
+    }
+
+    .big-photo-container {
+      cursor: default;
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      .arrow {
+        background-color: $white;
+        height: 3em;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        cursor: pointer;
+        user-select: none;
+
+        img {
+          height: 1em;
+          filter: brightness(0);
+        }
+
+        &:hover {
+          img {
+            filter: none;
+          }
+        }
+
+        &.previous-photo {
+          left: -1.5em;
+        }
+
+        &.next-photo {
+          right: -1.5em;
+        }
+      }
+    }
+
+    .thumbnails {
+      padding: 0 4em;
+      margin-top: 2em;
     }
   }
 }
