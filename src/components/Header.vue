@@ -15,15 +15,33 @@
     </div>
 
     <div class="user">
-      <div class="cart"><img src="../assets/images/icon-cart.svg" /></div>
+      <div class="cart-container">
+        <img
+          src="../assets/images/icon-cart.svg"
+          class="cart-icon"
+          @click="showCart = !showCart"
+        />
+        <Cart v-show="showCart"></Cart>
+      </div>
       <div class="profile"><img src="../assets/images/image-avatar.png" /></div>
     </div>
   </div>
 </template>
 
 <script>
+import Cart from "./Cart.vue";
 export default {
   name: "Header",
+
+  components: {
+    Cart,
+  },
+
+  data() {
+    return {
+      showCart: false,
+    };
+  },
 };
 </script>
 
@@ -73,10 +91,11 @@ export default {
     align-items: center;
     gap: 2.75em;
 
-    .cart {
+    .cart-container {
       cursor: pointer;
+      position: relative;
 
-      &:hover {
+      .cart-icon:hover {
         filter: brightness(0);
       }
     }

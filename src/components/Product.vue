@@ -2,16 +2,16 @@
   <div class="product">
     <Gallery
       v-model:activeImageId="activeImageId"
-      :images="images"
+      :images="product.images"
       @toggleLightbox="toggleLightbox"
     ></Gallery>
-    <Details></Details>
+    <Details :product="product"></Details>
   </div>
 
   <div v-show="lightboxActive" class="lightbox-container">
     <Gallery
       v-model:activeImageId="activeImageId"
-      :images="images"
+      :images="product.images"
       :is-lightbox="lightboxActive"
       @toggleLightbox="toggleLightbox"
     ></Gallery>
@@ -30,15 +30,15 @@ export default {
     Details,
   },
 
+  props: {
+    product: {
+      type: Object,
+      required: true,
+    },
+  },
+
   data() {
     return {
-      images: [
-        { id: 1, name: "image-product-1" },
-        { id: 2, name: "image-product-2" },
-        { id: 3, name: "image-product-3" },
-        { id: 4, name: "image-product-4" },
-      ],
-
       lightboxActive: false,
 
       activeImageId: 1,

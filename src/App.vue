@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <Header></Header>
-    <Product></Product>
+    <Product :product="currentProduct"></Product>
   </div>
 </template>
 
@@ -15,6 +15,38 @@ export default {
   components: {
     Header,
     Product,
+  },
+
+  data() {
+    return {
+      products: [
+        {
+          id: 1,
+          producer: "Sneaker Company",
+          name: "Fall Limited Edition Sneakers",
+          description:
+            "These low-profile sneakers are your perfect casual wear companion. Featuring a durable rubber outer sole, they'll withstand everything the weather can offer.",
+          basePrice: "250.00",
+          discountPercent: 50,
+          images: [
+            { id: 1, name: "image-product-1" },
+            { id: 2, name: "image-product-2" },
+            { id: 3, name: "image-product-3" },
+            { id: 4, name: "image-product-4" },
+          ],
+        },
+      ],
+
+      currentProductId: 1,
+    };
+  },
+
+  computed: {
+    currentProduct() {
+      return this.products.find(
+        (product) => product.id == this.currentProductId
+      );
+    },
   },
 };
 </script>

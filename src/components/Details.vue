@@ -1,18 +1,14 @@
 <template>
   <div class="details">
-    <p class="producer">Sneaker Company</p>
-    <h1 class="name">Fall Limited Edition Sneakers</h1>
-    <p class="description">
-      These low-profile sneakers are your perfect casual wear companion.
-      Featuring a durable rubber outer sole, they'll withstand everything the
-      weather can offer.
-    </p>
+    <p class="producer">{{ product.producer }}</p>
+    <h1 class="name">{{ product.name }}</h1>
+    <p class="description">{{ product.description }}</p>
     <div class="pricing">
       <div>
-        <h2 class="sell-price">$125.00</h2>
-        <span class="discount">50%</span>
+        <h2 class="sell-price">${{ sellPrice }}</h2>
+        <span class="discount">{{ product.discountPercent }}%</span>
       </div>
-      <h3 class="base-price">$250.00</h3>
+      <h3 class="base-price">${{ product.basePrice }}</h3>
     </div>
     <div class="get-product">
       <div class="amount">
@@ -28,7 +24,14 @@
           @click="productAmount++"
         />
       </div>
-      <button class="add-to-cart">
+      <button
+        class="add-to-cart"
+        @click="
+          productAmount !== 0
+            ? emitter.emit('addToCart', { product, productAmount, sellPrice })
+            : ''
+        "
+      >
         <img src="../assets/images/icon-cart.svg" class="cart-icon" />
         Add to cart
       </button>
@@ -40,10 +43,28 @@
 export default {
   name: "Details",
 
+  props: {
+    product: {
+      type: Object,
+      required: true,
+    },
+  },
+
+  emits: ["addToCart"],
+
   data() {
     return {
       productAmount: 0,
     };
+  },
+
+  computed: {
+    sellPrice() {
+      return (
+        this.product.basePrice -
+        (this.product.discountPercent / 100) * this.product.basePrice
+      ).toFixed(2);
+    },
   },
 };
 </script>
