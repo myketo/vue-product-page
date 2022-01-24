@@ -31,6 +31,8 @@
 export default {
   name: "Cart",
 
+  emits: ["updateAmountSum"],
+
   data() {
     return {
       products: [],
@@ -46,12 +48,13 @@ export default {
       var productIndex = this.getProductIndex(data.product.id);
       if (productIndex !== -1) {
         this.products[productIndex].amount += data.productAmount;
-        return;
+      } else {
+        this.products.push(data.product);
+        this.products.at(-1).amount = data.productAmount;
+        this.products.at(-1).sellPrice = data.sellPrice;
       }
 
-      this.products.push(data.product);
-      this.products.at(-1).amount = data.productAmount;
-      this.products.at(-1).sellPrice = data.sellPrice;
+      this.updateAmountSum();
     },
 
     getProductIndex(id) {
@@ -69,7 +72,17 @@ export default {
 
     removeProduct(id) {
       var productIndex = this.getProductIndex(id);
-      return this.products.splice(productIndex, 1);
+      this.products.splice(productIndex, 1);
+
+      this.updateAmountSum();
+    },
+
+    updateAmountSum() {
+      var amountSum = this.products.reduce((sum, curr) => {
+        return sum + curr.amount;
+      }, 0);
+
+      this.$emit("updateAmountSum", amountSum);
     },
   },
 };

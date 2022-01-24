@@ -16,12 +16,16 @@
 
     <div class="user">
       <div class="cart-container">
+        <div class="products-amount">{{ productAmountSum }}</div>
         <img
           src="../assets/images/icon-cart.svg"
           class="cart-icon"
           @click="showCart = !showCart"
         />
-        <Cart v-show="showCart"></Cart>
+        <Cart
+          v-show="showCart"
+          @updateAmountSum="(amountSum) => (productAmountSum = amountSum)"
+        ></Cart>
       </div>
       <div class="profile"><img src="../assets/images/image-avatar.png" /></div>
     </div>
@@ -40,6 +44,7 @@ export default {
   data() {
     return {
       showCart: false,
+      productAmountSum: 0,
     };
   },
 };
@@ -94,6 +99,19 @@ export default {
     .cart-container {
       cursor: pointer;
       position: relative;
+
+      .products-amount {
+        position: absolute;
+        right: -0.8em;
+        top: -0.5em;
+        color: white;
+        font-weight: $bold;
+        background-color: $orange;
+        font-size: 0.7em;
+        padding: 0.1em 0.55em;
+        border-radius: 1em;
+        z-index: 1;
+      }
 
       .cart-icon:hover {
         filter: brightness(0);

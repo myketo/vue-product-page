@@ -24,14 +24,7 @@
           @click="productAmount++"
         />
       </div>
-      <button
-        class="add-to-cart"
-        @click="
-          productAmount !== 0
-            ? emitter.emit('addToCart', { product, productAmount, sellPrice })
-            : ''
-        "
-      >
+      <button class="add-to-cart" @click="addToCart">
         <img src="../assets/images/icon-cart.svg" class="cart-icon" />
         Add to cart
       </button>
@@ -64,6 +57,22 @@ export default {
         this.product.basePrice -
         (this.product.discountPercent / 100) * this.product.basePrice
       ).toFixed(2);
+    },
+  },
+
+  methods: {
+    addToCart() {
+      if (this.productAmount === 0) {
+        return;
+      }
+
+      this.emitter.emit("addToCart", {
+        product: this.product,
+        productAmount: this.productAmount,
+        sellPrice: this.sellPrice,
+      });
+
+      this.productAmount = 0;
     },
   },
 };
