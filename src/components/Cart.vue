@@ -1,5 +1,11 @@
 <template>
-  <div class="cart">
+  <div
+    v-click-outside.visible="{
+      handler: 'clickOutside',
+      exclude: ['cart-icon'],
+    }"
+    class="cart"
+  >
     <h3 class="cart-header">Cart</h3>
     <div class="cart-contents">
       <template v-if="products.length">
@@ -31,11 +37,51 @@
 export default {
   name: "Cart",
 
-  emits: ["updateAmountSum"],
+  directives: {
+    clickOutside: {
+      beforeMount(el, binding) {
+        const handleOutsideClick = (e) => {
+          const { handler, exclude } = binding.value;
+
+          let clickedOnExcludedEl = false;
+          exclude.forEach((className) => {
+            if (!clickedOnExcludedEl) {
+              clickedOnExcludedEl = e.target.classList.contains(className);
+            }
+          });
+
+          if (
+            !clickedOnExcludedEl &&
+            !el.contains(e.target) &&
+            el !== e.target
+          ) {
+            if (binding.modifiers.visible) {
+              if (el.style.display !== "none") {
+                binding.instance[handler]();
+              }
+            } else {
+              binding.instance[handler]();
+            }
+          }
+        };
+        el.__vueClickOutside__ = handleOutsideClick;
+
+        document.addEventListener("click", handleOutsideClick);
+      },
+
+      unmounted(el) {
+        document.removeEventListener("click", el.__vueClickOutside__);
+        el.__vueClickOutside__ = null;
+      },
+    },
+  },
+
+  emits: ["updateAmountSum", "hideCart"],
 
   data() {
     return {
       products: [],
+      excluded: [""],
     };
   },
 
@@ -84,6 +130,10 @@ export default {
 
       this.$emit("updateAmountSum", amountSum);
     },
+
+    clickOutside() {
+      this.$emit("hideCart");
+    },
   },
 };
 </script>
@@ -112,7 +162,7 @@ export default {
     flex-direction: column;
     justify-content: space-around;
     min-height: 11.5em;
-    padding: 0.5em 1.5em;
+    padding: 0.75em 1.25em;
 
     .cart-item {
       display: flex;

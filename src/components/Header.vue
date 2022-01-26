@@ -25,6 +25,7 @@
         <Cart
           v-show="showCart"
           @updateAmountSum="(amountSum) => (productAmountSum = amountSum)"
+          @hideCart="showCart = false"
         ></Cart>
       </div>
       <div class="profile"><img src="../assets/images/image-avatar.png" /></div>
@@ -113,7 +114,8 @@ export default {
         z-index: 1;
       }
 
-      .cart-icon:hover {
+      .cart-icon:hover,
+      .products-amount:hover + .cart-icon {
         filter: brightness(0);
       }
     }
