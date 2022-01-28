@@ -47,7 +47,9 @@ export default {
 
   methods: {
     toggleLightbox() {
-      this.lightboxActive = !this.lightboxActive;
+      if (!this.isMobile) {
+        this.lightboxActive = !this.lightboxActive;
+      }
     },
   },
 };
@@ -59,6 +61,12 @@ export default {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 9em;
+
+  @media (max-width: $mobile-max) {
+    grid-template-columns: none;
+    margin: 0;
+    gap: 0;
+  }
 }
 
 .lightbox-container {

@@ -2,7 +2,7 @@
   <div
     v-click-outside.visible="{
       handler: 'clickOutside',
-      exclude: ['cart-icon'],
+      exclude: ['cart-icon', 'products-amount'],
     }"
     class="cart"
   >
@@ -142,13 +142,21 @@ export default {
 .cart {
   position: absolute;
   width: 25vw;
-  margin-top: 1.75em;
+  margin-top: 2em;
   left: 50%;
   transform: translateX(-50%);
   box-shadow: 0px 20px 50px -20px rgba(66, 68, 90, 0.75);
   border-radius: 0.4em;
   background: $white;
   cursor: default;
+
+  @media (max-width: $mobile-max) {
+    z-index: 1;
+    left: auto;
+    right: -3.75em;
+    transform: none;
+    width: 96vw;
+  }
 
   .cart-header {
     border-bottom: 1px solid $grayish-blue;
@@ -166,6 +174,7 @@ export default {
 
     .cart-item {
       display: flex;
+      flex-direction: row;
       gap: 1em;
       width: 100%;
 
@@ -179,6 +188,13 @@ export default {
 
         p {
           line-height: 1.5em;
+
+          @media (max-width: $mobile-max) {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 180px;
+          }
         }
 
         .product-price {
@@ -194,6 +210,10 @@ export default {
 
         &:hover {
           filter: brightness(0);
+        }
+
+        @media (max-width: $mobile-max) {
+          margin: 0 0 0 auto;
         }
       }
     }

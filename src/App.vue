@@ -72,6 +72,10 @@ html {
 
     .app-container {
       margin: 0 10%;
+
+      @media (max-width: $mobile-max) {
+        margin: 0;
+      }
     }
   }
 }

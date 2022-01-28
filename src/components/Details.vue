@@ -82,10 +82,18 @@ export default {
 .details {
   padding: 4em 0;
 
+  @media (max-width: $mobile-max) {
+    padding: 1.5em;
+  }
+
   .producer {
     color: $orange;
     text-transform: uppercase;
     font-weight: $bold;
+
+    @media (max-width: $mobile-max) {
+      font-size: 0.9em;
+    }
   }
 
   .name {
@@ -93,17 +101,30 @@ export default {
     font-weight: $bold;
     margin-top: 0.5em;
     color: $very-dark-blue;
+
+    @media (max-width: $mobile-max) {
+      font-size: 1.75em;
+    }
   }
 
   .description {
     margin-top: 2.5em;
     line-height: 1.75em;
     color: $dark-grayish-blue;
+
+    @media (max-width: $mobile-max) {
+      margin-top: 1.25em;
+      font-size: 0.95em;
+      line-height: 1.5em;
+    }
   }
 
   .pricing {
     margin-top: 1.75em;
     font-weight: $bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     div {
       display: flex;
@@ -111,9 +132,17 @@ export default {
       gap: 1.1em;
       margin-bottom: 1em;
 
+      @media (max-width: $mobile-max) {
+        margin-bottom: 0;
+      }
+
       .sell-price {
         font-size: 2em;
         color: $very-dark-blue;
+
+        @media (max-width: $mobile-max) {
+          font-size: 1.75em;
+        }
       }
 
       .discount {
@@ -122,6 +151,10 @@ export default {
         background-color: $pale-orange;
         border-radius: 0.25em;
         font-size: 1.15em;
+
+        @media (max-width: $mobile-max) {
+          font-size: 1em;
+        }
       }
     }
 
@@ -129,6 +162,10 @@ export default {
       color: $grayish-blue;
       font-size: 1.15em;
       text-decoration: line-through;
+
+      @media (max-width: $mobile-max) {
+        font-size: 1em;
+      }
     }
   }
 
@@ -137,6 +174,10 @@ export default {
     margin-top: 2.5em;
     display: flex;
     gap: 1em;
+
+    @media (max-width: $mobile-max) {
+      flex-direction: column;
+    }
 
     .amount {
       height: 100%;
@@ -147,6 +188,11 @@ export default {
       background-color: $light-grayish-blue;
       border-radius: 0.6em;
       padding: 0 0.75em;
+
+      @media (max-width: $mobile-max) {
+        width: 100%;
+        padding: 1.5em;
+      }
 
       .product-amount {
         font-weight: $bold;
@@ -177,6 +223,12 @@ export default {
       font-size: 1em;
       cursor: pointer;
       box-shadow: 0px 10px 100px -15px hsla(25, 100%, 55%, 1);
+
+      @media (max-width: $mobile-max) {
+        width: 100%;
+        padding: 1.5em;
+        box-shadow: none;
+      }
 
       .cart-icon {
         filter: brightness(3);

@@ -11,16 +11,16 @@
       @click="!isLightbox ? $emit('toggleLightbox') : ''"
     >
       <div
-        v-if="isLightbox"
         class="arrow previous-photo"
+        :class="{ 'is-active': isLightbox }"
         @click="changeImage('previous')"
       >
         <img src="../assets/images/icon-previous.svg" />
       </div>
       <img :src="getImage(activeImageId)" class="big-photo" />
       <div
-        v-if="isLightbox"
         class="arrow next-photo"
+        :class="{ 'is-active': isLightbox }"
         @click="changeImage('next')"
       >
         <img src="../assets/images/icon-next.svg" />
@@ -105,10 +105,67 @@ export default {
 .gallery {
   .big-photo-container {
     cursor: pointer;
+    position: relative;
+
+    @media (max-width: $mobile-max) {
+      display: flex;
+      align-items: center;
+    }
 
     .big-photo {
       width: 100%;
       border-radius: 0.85em;
+
+      @media (max-width: $mobile-max) {
+        border-radius: 0;
+        height: 300px;
+        object-fit: cover;
+        cursor: default;
+      }
+    }
+
+    .arrow {
+      background-color: $white;
+      height: 3em;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      cursor: pointer;
+      user-select: none;
+
+      @media (max-width: $mobile-max) {
+        display: flex;
+      }
+
+      img {
+        height: 1em;
+        filter: brightness(0);
+      }
+
+      &:hover {
+        img {
+          filter: none;
+        }
+      }
+
+      &.previous-photo {
+        left: -1.5em;
+
+        @media (max-width: $mobile-max) {
+          left: 1em;
+        }
+      }
+
+      &.next-photo {
+        right: -1.5em;
+
+        @media (max-width: $mobile-max) {
+          right: 1em;
+        }
+      }
     }
   }
 
@@ -116,6 +173,10 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-top: 1.65em;
+
+    @media (max-width: $mobile-max) {
+      display: none;
+    }
 
     .thumbnail {
       width: 20%;
@@ -164,42 +225,8 @@ export default {
     }
 
     .big-photo-container {
-      cursor: default;
       display: flex;
       align-items: center;
-      position: relative;
-
-      .arrow {
-        background-color: $white;
-        height: 3em;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        cursor: pointer;
-        user-select: none;
-
-        img {
-          height: 1em;
-          filter: brightness(0);
-        }
-
-        &:hover {
-          img {
-            filter: none;
-          }
-        }
-
-        &.previous-photo {
-          left: -1.5em;
-        }
-
-        &.next-photo {
-          right: -1.5em;
-        }
-      }
     }
 
     .thumbnails {

@@ -1,22 +1,26 @@
 <template>
   <div class="header">
     <div class="left-side">
-      <div class="logo"><img src="../assets/images/logo.svg" /></div>
+      <img
+        src="../assets/images/icon-menu.svg"
+        class="menu-icon"
+        @click="menuActive = true"
+      />
 
-      <nav class="navigation">
-        <ul class="links">
-          <li>Collections</li>
-          <li>Men</li>
-          <li>Women</li>
-          <li>About</li>
-          <li>Contact</li>
-        </ul>
-      </nav>
+      <div class="logo"><img src="../assets/images/logo.svg" /></div>
+      <div v-show="menuActive" class="menu-background">
+        <Navigation
+          :menu-active="menuActive"
+          @closeMenu="menuActive = false"
+        ></Navigation>
+      </div>
     </div>
 
     <div class="user">
       <div class="cart-container">
-        <div class="products-amount">{{ productAmountSum }}</div>
+        <div class="products-amount" @click="showCart = !showCart">
+          {{ productAmountSum }}
+        </div>
         <img
           src="../assets/images/icon-cart.svg"
           class="cart-icon"
@@ -34,11 +38,13 @@
 </template>
 
 <script>
+import Navigation from "./Navigation.vue";
 import Cart from "./Cart.vue";
 export default {
   name: "Header",
 
   components: {
+    Navigation,
     Cart,
   },
 
@@ -46,6 +52,7 @@ export default {
     return {
       showCart: false,
       productAmountSum: 0,
+      menuActive: false,
     };
   },
 };
@@ -57,38 +64,33 @@ export default {
   border-bottom: 1px solid $grayish-blue;
   display: flex;
 
+  @media (max-width: $mobile-max) {
+    padding: 1.5em;
+    border-bottom: none;
+  }
+
   .left-side {
     width: 100%;
     display: flex;
     align-items: center;
 
-    .navigation {
-      .links {
-        display: flex;
-        gap: 2em;
-        margin-left: 3.75em;
-        color: $dark-grayish-blue;
+    .menu-icon {
+      display: none;
+      margin-right: 1em;
 
-        li {
-          cursor: pointer;
-          position: relative;
-          padding: 0.1em;
-
-          &:hover {
-            color: $very-dark-blue;
-
-            &:before {
-              content: "";
-              border-bottom: 4px solid $orange;
-              display: block;
-              position: absolute;
-              width: 100%;
-              top: 3.85em;
-              left: 0;
-            }
-          }
-        }
+      @media (max-width: $mobile-max) {
+        display: block;
       }
+    }
+
+    .menu-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: $black;
+      z-index: 2;
     }
   }
 
@@ -97,13 +99,17 @@ export default {
     align-items: center;
     gap: 2.75em;
 
+    @media (max-width: $mobile-max) {
+      gap: 1.25em;
+    }
+
     .cart-container {
       cursor: pointer;
       position: relative;
 
       .products-amount {
         position: absolute;
-        right: -0.8em;
+        right: -0.65em;
         top: -0.5em;
         color: white;
         font-weight: $bold;
@@ -112,6 +118,11 @@ export default {
         padding: 0.1em 0.55em;
         border-radius: 1em;
         z-index: 1;
+
+        @media (max-width: $mobile-max) {
+          font-size: 0.6em;
+          padding: 0.1em 0.55em;
+        }
       }
 
       .cart-icon:hover,
@@ -133,6 +144,10 @@ export default {
       img {
         width: 3em;
         border-radius: 100vw;
+
+        @media (max-width: $mobile-max) {
+          width: 1.5em;
+        }
       }
     }
   }
